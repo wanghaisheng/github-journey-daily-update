@@ -8,20 +8,20 @@ author_list:
   - "Bob Johnson"
 
 # Output folder for generated markdown files
-output_folder: "markdown_files"
+output_folder: "appleblog/src/pages/posts"
 
 # Folder to store the generated images
-image_folder: "generated_images"
+image_folder: "appleblog/public/assets"
 
 # Base URL for serving images, update this to match your server setup
 base_url: "http://localhost:3000/"
 
 # GitHub username to fetch repositories from
-username: "your_github_username_here"
+username: "wanghaisheng"
 
 # OpenAI model for chat
 openai:
   model: "gpt-4o-mini"  # Set the model name you want to use
 
 # Specify the number of days within which repositories are considered "recently updated"
-days_threshold: 30
+days_threshold: 1

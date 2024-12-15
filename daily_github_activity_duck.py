@@ -160,7 +160,7 @@ def generate_cover_image(prompt):
     return None
 
 # Create Markdown file for each repository
-def create_markdown_files(repos, username, chat, days_threshold=30):
+def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
 
     for repo in repos:
@@ -234,6 +234,85 @@ title: {repo_name}
         with open(filename, "w", encoding="utf-8") as file:
             file.write(md_content)
         print(f"Markdown file created: {filename}")
+def create_new_markdown_files(repos, username, chat, days_threshold=30):
+    date_today = datetime.date.today().strftime("%Y-%m-%d")
+
+    for repo in repos:
+        # Skip repositories that haven't been updated recently
+        if not is_recently_updated(repo, days_threshold):
+            print(f"Skipping {repo['name']} (not updated recently).")
+            continue
+        
+        repo_name = repo["name"]
+        repo_url = repo["html_url"]
+        stars_count = repo["stargazers_count"]
+        forks_count = repo["forks_count"]
+        description = repo["description"] or "No description provided."
+        is_forked = repo["fork"]
+
+        # Check if markdown file already exists for this repository
+        md_filename = os.path.join(OUTPUT_FOLDER, f"{repo_name}.md")
+        if os.path.exists(md_filename):
+            print(f"Skipping {repo_name} (markdown file already exists).")
+            continue
+
+        # Fetch README content or fallback to description
+        readme_content = get_readme_content(username, repo_name) or description
+
+        # Generate cover image based on the description or repository name
+        cover_image_url = generate_cover_image(f"A creative image representing the repository: {repo_name}")
+
+        # Extract keywords and tags using Chat class
+        keywords, tags = asyncio.run(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
+
+        # Select author
+        author = select_author()
+
+        # Construct Markdown content
+        md_content = f"""---
+author: {author}
+cover:
+  alt: cover
+  square: {cover_image_url}
+  url: {cover_image_url}
+description: '{description}'
+featured: true
+keywords: {', '.join(keywords)}
+layout: ../../layouts/MarkdownPost.astro
+meta:
+- content: {author}
+  name: author
+- content: {', '.join(keywords)}
+  name: keywords
+pubDate: '{date_today} 15:27:08'
+tags:
+- {', '.join(tags)}
+theme: light
+title: {repo_name}
+---
+
+# {repo_name}
+
+## Repository URL: 
+[{repo_url}]({repo_url})
+
+## Stars: 
+**{stars_count}**
+
+## Forks: 
+**{forks_count}**
+
+## Description: 
+{description}
+
+## README Content: 
+{readme_content}
+"""
+
+        # Save to .md file in the output folder
+        with open(md_filename, "w", encoding="utf-8") as file:
+            file.write(md_content)
+        print(f"Markdown file created: {md_filename}")
 
 # Main execution
 async def main():
@@ -247,7 +326,7 @@ async def main():
         print("No repositories found or failed to fetch repositories.")
         return
 
-    create_markdown_files(repos, username, chat)
+    create_new_markdown_files(repos, username, chat)
 
 # Run the async main function
 if __name__ == "__main__":

@@ -12,14 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: "Asia/Shanghai"
-      RUN_ENV: "production" # within ['production', 'development']
-      POWER: 16
+      RUN_ENV: ${{ inputs.run_env || 'production' }} # within ['production', 'development']
+      POWER: ${{ inputs.power || 16 }}
     steps:
       # ============================================
       # TODO [√] 检查工作分支及 Workflows 运行环境
       # ============================================
       - name: Checkout
         uses: actions/checkout@v4
+
       # ============================================
       # TODO [√] 创建 Python3.6+ 编译环境
       # ============================================
@@ -27,6 +28,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+
       # ============================================
       # TODO [√] 安装 Project 第三方依赖
       # ============================================
@@ -34,15 +36,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
       # ============================================
       # TODO [√] 测试 Scaffold 脚手架指令
       # ============================================
       - name: Run daily arxiv
         run: |
-          # python grab-paper.py
           python daily_github_activity_duck.py run --env=${{ env.RUN_ENV }} --power=${{ env.POWER }}
         env:
-          repo: ${{github.repository}}       
+          repo: ${{github.repository}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
+
       # ============================================
       # TODO [√] 更新仓库数据
       # ============================================
@@ -54,6 +59,9 @@ jobs:
           git add --all
           git commit -m "Automated deployment @ $(date '+%Y-%m-%d %H:%M:%S') ${{ env.TZ }}"
           git push --force origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # ============================================
       # TODO [√] 更新 vercel
       # ============================================

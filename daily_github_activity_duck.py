@@ -11,7 +11,7 @@ import asyncio
 load_dotenv()
 
 # Load config file for default author, folder, and OpenAI model
-CONFIG_FILE = "config.yaml"
+CONFIG_FILE = "config.yml"
 def load_config():
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, "r") as file:

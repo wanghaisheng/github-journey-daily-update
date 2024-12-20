@@ -45,7 +45,7 @@ jobs:
           python daily_github_activity_duck.py run --env=${{ env.RUN_ENV }} --power=${{ env.POWER }}
         env:
           repo: ${{github.repository}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
 
       # ============================================

@@ -7,3 +7,4 @@ loguru
 pytz
 fire
 beautifulsoup4
+dotenv

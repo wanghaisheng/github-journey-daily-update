@@ -32,11 +32,11 @@ if not os.path.exists(IMAGE_FOLDER):
     os.makedirs(IMAGE_FOLDER)
 
 # GitHub API Token
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "your_github_access_token_here")
+GITHUB_TOKEN = os.getenv("TOKEN", "your_github_access_token_here")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 # Image generation API URL and Token
-IMAGE_API_URL = "https://your-worker-url.workers.dev/api/image"
+IMAGE_API_URL = "free-flux.v2ray-tokyo.workers.dev/api/image"
 IMAGE_API_KEY = os.getenv("IMAGE_API_KEY", "your_image_api_key_here")
 
 # Chat class and method integration

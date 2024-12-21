@@ -6,7 +6,7 @@ import random
 import yaml
 from dotenv import load_dotenv
 import asyncio
-
+from g4fhelper import EnhancedBlogGenerator
 # Load environment variables from .env file
 load_dotenv()
 

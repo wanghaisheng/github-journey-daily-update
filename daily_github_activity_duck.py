@@ -321,8 +321,9 @@ prompt=            f"A creative image representing the repository: {readme_conte
             keywords, tags = asyncio.run(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
         else:
             loop = asyncio.get_event_loop()
+            task = asyncio.create_task(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
 
-            keywords, tags = loop.create_task(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
+            keywords, tags = await task
 
         # Select author
         author = select_author()

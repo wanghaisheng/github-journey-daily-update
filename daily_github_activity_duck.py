@@ -252,12 +252,12 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
         if response.status_code == 200:
             data=response.json()
             if data:
-                if 'choices' in data and len(data['choices'])>0:
-                    try:
-                        url=data['choices'][0]['message']['url']
-                        return url
-                    except:
-                        return None
+                try:
+                    url=data['choices'][0]['message']['url']
+                    print('create image',url)
+                    return url
+                except:
+                    return None
             return None
         else:
             print("error:\n", response.status_code, "message:\n", response.text)
@@ -374,8 +374,8 @@ async def create_new_markdown_files(repos, username, chat, days_threshold=30):
                     api_url=IMAGE_API_URL,
         api_key=IMAGE_API_KEY,
 prompt=            f"A creative image representing the repository: {readme_content}")
-        if cover_image_url is None:
-            cover_image_url = generate_cover_image(f"A creative image representing the repository: {readme_content}")
+        # if cover_image_url is None:
+            # cover_image_url = generate_cover_image(f"A creative image representing the repository: {readme_content}")
 
         # Extract keywords and tags using Chat class
         keywords=None

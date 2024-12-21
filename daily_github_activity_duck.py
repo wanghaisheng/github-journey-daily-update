@@ -154,6 +154,7 @@ def siliconflow(text,token,model='Qwen2.5'):
     return None 
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):
+    text=text[:3000]
     prompt = f"Extract keywords  from the following text:\n{text}\n, return results as keywords:xx,xxx,xx"
     # keywords_response = await chat.fetch_response(prompt)
     keywords_response=siliconflow(text=prompt,token=SILICON_TOKEN)

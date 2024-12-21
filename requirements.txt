@@ -9,3 +9,5 @@ fire
 beautifulsoup4
 python-dotenv
 g4f[all]
+plotly
+

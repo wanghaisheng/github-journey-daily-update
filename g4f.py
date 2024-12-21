@@ -1,18 +1,11 @@
 import os
 import json
 import g4f
-from github import Github, GithubException
 from subprocess import check_output, CalledProcessError
 from g4f.client import Client
 from g4f.Provider import BaseProvider
 
 
-def get_github_context():
-    event_path = os.getenv('GITHUB_EVENT_PATH')
-    if not event_path:
-        raise EnvironmentError('GITHUB_EVENT_PATH not found in environment variables.')
-    with open(event_path, 'r') as f:
-        return json.load(f)
 
 
 def main():
@@ -137,32 +130,6 @@ Please generate a **Pull Request description** for the provided diff, following 
     description = chat_completion.choices[0].message.content.strip()
     print(f"Received response from {model_name}. Length: {len(description)} characters")
     return description
-
-
-def update_pr_description(github_token, context, pr_number, generated_description):
-    g = Github(github_token)
-    repo = g.get_repo(f"{context['repository']['owner']['login']}/{context['repository']['name']}")
-    pull_request = repo.get_pull(pr_number)
-
-    current_description = pull_request.body or ''
-    new_description = f"""> `AUTO DESCRIPTION`
-> by [auto-pr-description-g4f-action](https://github.com/yuri-val/auto-pr-description-g4f-action)
-\n{generated_description}
-"""
-
-    try:
-        if current_description and not current_description.startswith('> `AUTO DESCRIPTION`'):
-            print('Creating comment with original description...')
-            pull_request.create_issue_comment(f'**Original description**:\n\n{current_description}')
-            print('Comment created successfully.')
-
-        print('Updating PR description...')
-        pull_request.edit(body=new_description)
-        print('PR description updated successfully.')
-
-    except GithubException as e:
-        print(f'Error updating PR description: {e}')
-        raise
 
 
 if __name__ == '__main__':

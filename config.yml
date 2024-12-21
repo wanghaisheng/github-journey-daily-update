@@ -19,6 +19,8 @@ base_url: "http://localhost:3000/"
 # GitHub username to fetch repositories from
 username: "wanghaisheng"
 
+image_api_url: "https://fluxapi.borninsea.com/v1/chat/completions"
+
 # OpenAI model for chat
 openai:
   model: "gpt-4o-mini"  # Set the model name you want to use

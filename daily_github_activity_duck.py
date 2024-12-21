@@ -268,7 +268,8 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
 
 def generateblog(repo_name,repo_description,readme_content,username=None,current_date=None):
     if current_date is None:
-        current_date = datetime.now().strftime('%Y%m%d %H%M%S')
+        current_date = datetime.datetime.now().strftime('%Y%m%d %H%M%S')
+        
     if username is None:
        username="wanghaisheng" 
     generator = EnhancedBlogGenerator(
@@ -288,7 +289,7 @@ def generateblog(repo_name,repo_description,readme_content,username=None,current
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
-    pubdate = datetime.now().strftime('%Y%m%d %H%M%S')
+    pubdate = datetime.datetime.now().strftime('%Y%m%d %H%M%S')
 
     for repo in repos:
         # Skip repositories that haven't been updated recently
@@ -365,7 +366,7 @@ title: {title}
         print(f"Markdown file created: {filename}")
 async def create_new_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
-    pubdate = datetime.now().strftime('%Y%m%d %H%M%S')
+    pubdate = datetime.datetime.now().strftime('%Y%m%d %H%M%S')
 
     for repo in repos:
         # Skip repositories that haven't been updated recently

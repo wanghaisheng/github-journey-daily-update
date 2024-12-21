@@ -265,7 +265,14 @@ def create_new_markdown_files(repos, username, chat, days_threshold=30):
         cover_image_url = generate_cover_image(f"A creative image representing the repository: {repo_name}")
 
         # Extract keywords and tags using Chat class
-        keywords, tags = asyncio.run(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
+        keywords=None
+        tags=None
+        if not asyncio.get_event_loop().is_running():
+            keywords, tags = asyncio.run(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
+        else:
+            loop = asyncio.get_event_loop()
+
+            keywords, tags = loop.create_task(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
 
         # Select author
         author = select_author()

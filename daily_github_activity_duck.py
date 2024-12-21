@@ -157,13 +157,13 @@ async def extract_keywords_and_tags(chat, text):
     prompt = f"Extract keywords  from the following text:\n{text}\n, return results as keywords:xx,xxx,xx"
     # keywords_response = await chat.fetch_response(prompt)
     keywords_response=siliconflow(text=prompt,token=SILICON_TOKEN)
-    keywords = keywords_response.split("keywords,") if "keywords," in keywords_response else keywords_response
+    keywords = keywords_response.split(":")[1] if ":" in keywords_response else keywords_response
     prompt = f"Extract tags from the following text:\n{text}\n,return tags as tags:xx,xx,xx"
     tags_response=siliconflow(text=prompt,token=SILICON_TOKEN)
 
 
     
-    tags = tags_response.split("tags,") if "tags," in tags_response else tags_response
+    tags = tags_response.split(":")[1] if ":" in tags_response else tags_response
 
     
     return keywords.split(", "), tags.split(", ")

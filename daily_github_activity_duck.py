@@ -10,6 +10,7 @@ import asyncio
 from g4fhelper import EnhancedBlogGenerator
 # Load environment variables from .env file
 load_dotenv()
+print('Script started')
 
 # Load config file for default author, folder, and OpenAI model
 CONFIG_FILE = "config.yml"

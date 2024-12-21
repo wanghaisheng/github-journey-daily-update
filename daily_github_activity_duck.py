@@ -126,12 +126,14 @@ def getai(content):
     print(response.choices[0].message.content)
     return response.choices[0].message.content
 
-def siliconflow(text,token,model='deepseek-ai/deepseek-v12'):
+def siliconflow(text,token,model='Qwen2.5'):
     url = "https://api.siliconflow.cn/v1/chat/completions"
 
     payload = {
     "model": "deepseek-ai/deepseek-vl2",
-    "messages": [
+     "model": "Qwen/Qwen2.5-7B-Instruct"
+
+        "messages": [
         {
             "role": "user",
             "content": [
@@ -151,7 +153,7 @@ def siliconflow(text,token,model='deepseek-ai/deepseek-v12'):
     response = requests.request("POST", url, json=payload, headers=headers)
 
     print(response.text)
-  
+    return response.text
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):
     prompt = f"Extract keywords and tags from the following text:\n{text}\n"

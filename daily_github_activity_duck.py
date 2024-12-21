@@ -126,7 +126,7 @@ def getai(content):
     print(response.choices[0].message.content)
     return response.choices[0].message.content
 
-def siliconflow(text,token,model='deepseek-ai/deepseek-v12')
+def siliconflow(text,token,model='deepseek-ai/deepseek-v12'):
     url = "https://api.siliconflow.cn/v1/chat/completions"
 
     payload = {

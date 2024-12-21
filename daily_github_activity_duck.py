@@ -258,11 +258,10 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
                         return None
             return None
         else:
-            print("error": response.status_code, "message": response.text)
+            print("error:\n", response.status_code, "message:\n", response.text)
             return None # Error handling
     except Exception as e:
-        return {"error": "exception", "message": str(e)}
-
+        return None 
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")

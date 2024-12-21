@@ -1,3 +1,4 @@
+import traceback
 import requests
 import json
 import os
@@ -452,18 +453,24 @@ title: {title}
 
 # Main execution
 async def main():
+    try:
+   
     # Initialize the chat with the model from config
-    chat = Chat(vqd="your_vqd_here", model="gpt-4o-mini")
+        chat = Chat(vqd="your_vqd_here", model="gpt-4o-mini")
 
     # Get the username from config
-    username = config.get("username", "default_username")
-    print('start to detect all repos')
-    repos = get_repositories(username)[:10]
-    if not repos:
-        print("No repositories found or failed to fetch repositories.")
-        return
-    print('create md for repos')
-    await create_new_markdown_files(repos, username, chat)
+        username = config.get("username", "default_username")
+        print('start to detect all repos')
+        repos = get_repositories(username)[:10]
+        if not repos:
+            print("No repositories found or failed to fetch repositories.")
+            return
+        print('create md for repos')
+        await create_new_markdown_files(repos, username, chat)
+    except Exception as e:
+        print(f"Exception in main: {e}")
+        
+        traceback.print_exc()
 
 # Run the async main function
 if __name__ == "__main__":

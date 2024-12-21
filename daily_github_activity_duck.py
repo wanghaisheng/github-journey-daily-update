@@ -154,11 +154,11 @@ def siliconflow(text,token,model='Qwen2.5'):
     return None 
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):
-    prompt = f"Extract keywords  from the following text:\n{text}\n"
+    prompt = f"Extract keywords  from the following text:\n{text}\n, return results as keywords:xx,xxx,xx"
     # keywords_response = await chat.fetch_response(prompt)
     keywords_response=siliconflow(text=prompt,token=SILICON_TOKEN)
     keywords = keywords_response.split("keywords,") if "keywords," in keywords_response else keywords_response
-    prompt = f"Extract tags from the following text:\n{text}\n"
+    prompt = f"Extract tags from the following text:\n{text}\n,return tags as tags:xx,xx,xx"
     tags_response=siliconflow(text=prompt,token=SILICON_TOKEN)
 
 
@@ -188,6 +188,7 @@ def save_image_locally(image_data, image_name):
 
 # Generate a cover image based on the prompt
 def generate_cover_image(prompt):
+    prompt=prompt[:1000]
     headers = {
         "Authorization": f"Bearer {IMAGE_API_KEY}",
         "Content-Type": "application/json"
@@ -229,6 +230,7 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
     Returns:
         dict: The JSON response from the endpoint.
     """
+    prompt=prompt[:1000]
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",

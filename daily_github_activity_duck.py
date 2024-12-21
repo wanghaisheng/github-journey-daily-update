@@ -115,16 +115,7 @@ def get_readme_content(owner, repo):
         readme_content = requests.get(readme_data["download_url"]).text
         return readme_content
     return None
-from g4f.client import Client
-def getai(content):
-    client = Client()
-    response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": content}],
-    # Add any other necessary parameters
-)
-    print(response.choices[0].message.content)
-    return response.choices[0].message.content
+
 
 def siliconflow(text,token,model='Qwen2.5'):
     url = "https://api.siliconflow.cn/v1/chat/completions"

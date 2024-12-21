@@ -37,7 +37,7 @@ print('your token',GITHUB_TOKEN)
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 # Image generation API URL and Token
-IMAGE_API_URL = "free-flux.v2ray-tokyo.workers.dev/api/image"
+IMAGE_API_URL = "https://free-flux.v2ray-tokyo.workers.dev/api/image"
 IMAGE_API_KEY = os.getenv("IMAGE_API_KEY", "your_image_api_key_here")
 print('your IMAGE_API_KEY',IMAGE_API_KEY)
 

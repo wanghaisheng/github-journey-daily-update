@@ -20,6 +20,9 @@ def load_config():
 
 config = load_config()
 CHAT_URL=config.get('chat_url','https://heisenberg-duckduckgo-87.deno.dev/v1/chat/completions')
+CHAT_URL = "https://duckduckgo.com/duckchat/v1/chat"
+STATUS_URL = "https://duckduckgo.com/duckchat/v1/status"
+
 DEFAULT_AUTHOR_LIST = config.get("author_list", ["unknown"])
 OUTPUT_FOLDER = config.get("output_folder", "markdown_files")
 IMAGE_FOLDER = config.get("image_folder", "generated_images")  # Image folder to save images
@@ -111,6 +114,17 @@ def get_readme_content(owner, repo):
         readme_content = requests.get(readme_data["download_url"]).text
         return readme_content
     return None
+from g4f.client import Client
+def getai(content):
+    client = Client()
+    response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": content}],
+    # Add any other necessary parameters
+)
+    print(response.choices[0].message.content)
+    return response.choices[0].message.content
+
 
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):

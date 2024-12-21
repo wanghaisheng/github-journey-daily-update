@@ -305,7 +305,7 @@ def create_all_markdown_files(repos, username, chat, days_threshold=30):
 
         # Fetch README content or fallback to description
         readme_content = get_readme_content(username, repo_name)
-        blogmd,title= generateblog(repo_name,repo_description=description,readme_content,username=username,current_date=None)
+        blogmd,title= generateblog(repo_name,repo_description=description,readme_content=readme_content,username=username,current_date=None)
             
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(
@@ -388,7 +388,7 @@ async def create_new_markdown_files(repos, username, chat, days_threshold=30):
 
         # Fetch README content or fallback to description
         readme_content = get_readme_content(username, repo_name) or description
-        blogmd,title= generateblog(repo_name,repo_description=description,readme_content,username=username,current_date=None)
+        blogmd,title= generateblog(repo_name,repo_description=description,readme_content=readme_content,username=username,current_date=None)
 
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(

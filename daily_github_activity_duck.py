@@ -33,12 +33,14 @@ if not os.path.exists(IMAGE_FOLDER):
 
 # GitHub API Token
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "your_github_access_token_here")
+
 print('your token',GITHUB_TOKEN)
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 # Image generation API URL and Token
 IMAGE_API_URL = "https://free-flux.v2ray-tokyo.workers.dev/api/image"
 IMAGE_API_KEY = os.getenv("IMAGE_API_KEY", "your_image_api_key_here")
+
 print('your IMAGE_API_KEY',IMAGE_API_KEY)
 
 # Chat class and method integration
@@ -306,7 +308,7 @@ def create_new_markdown_files(repos, username, chat, days_threshold=30):
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(
                     api_url='https://flux-api.v2ray-tokyo.workers.dev/',
-        api_key=api_key,
+        api_key=IMAGE_API_KEY,
 prompt=            f"A creative image representing the repository: {readme_content}")
         if cover_image_url is None:
             cover_image_url = generate_cover_image(f"A creative image representing the repository: {readme_content}")

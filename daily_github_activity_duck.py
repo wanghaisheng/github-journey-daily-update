@@ -37,6 +37,7 @@ if not os.path.exists(IMAGE_FOLDER):
 
 # GitHub API Token
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "your_github_access_token_here")
+SILICON_TOKEN = os.getenv("SILICON_TOKEN", "your_SILICON_TOKEN_access_token_here")
 
 print('your token',GITHUB_TOKEN)
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
@@ -125,11 +126,37 @@ def getai(content):
     print(response.choices[0].message.content)
     return response.choices[0].message.content
 
+def siliconflow(text,token,model='deepseek-ai/deepseek-v12')
+    url = "https://api.siliconflow.cn/v1/chat/completions"
 
+    payload = {
+    "model": "deepseek-ai/deepseek-vl2",
+    "messages": [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": text
+                }
+            ]
+        }
+    ]
+}
+    headers = {
+    "Authorization": f"Bearer {token}",
+    "Content-Type": "application/json"
+}
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+
+    print(response.text)
+  
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):
     prompt = f"Extract keywords and tags from the following text:\n{text}\n"
-    keywords_response = await chat.fetch_response(prompt)
+    # keywords_response = await chat.fetch_response(prompt)
+    keywords_response=siliconflow(text=prompt,token=SILICON_TOKEN)
     keywords, tags = keywords_response.split("\n") if "\n" in keywords_response else (keywords_response, keywords_response)
     return keywords.split(", "), tags.split(", ")
 
@@ -227,23 +254,6 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
     except Exception as e:
         return {"error": "exception", "message": str(e)}
 
-# Example Usage
-if __name__ == "__main__":
-    # Replace these values with your actual endpoint and API key
-    api_url = "https://fluxapi.borninsea.com/v1/chat/completions"  # Replace with the Worker URL
-    api_key = "123456"  # Replace with your API key
-    
-    # Call the endpoint
-    result = call_image_endpoint(
-        api_url=api_url,
-        api_key=api_key,
-        prompt="A panda sitting on a bamboo raft floating on a serene lake during sunrise",
-        size="1024x1024",
-        n=1
-    )
-    
-    # Print the response
-    print(result)
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
@@ -265,8 +275,13 @@ def create_all_markdown_files(repos, username, chat, days_threshold=30):
         readme_content = get_readme_content(username, repo_name) or description
 
         # Generate cover image based on the description or repository name
-        cover_image_url = generate_cover_image(f"A creative image representing the repository: {repo_name}")
+        cover_image_url = call_image_endpoint(
+                    api_url=IMAGE_API_URL,
+        api_key=IMAGE_API_KEY,
+prompt=            f"A creative image representing the repository: {readme_content}")
 
+
+            
         # Extract keywords and tags using Chat class
         keywords, tags = asyncio.run(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
 

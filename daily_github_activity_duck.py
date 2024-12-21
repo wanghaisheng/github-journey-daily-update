@@ -27,6 +27,8 @@ DEFAULT_AUTHOR_LIST = config.get("author_list", ["unknown"])
 OUTPUT_FOLDER = config.get("output_folder", "markdown_files")
 IMAGE_FOLDER = config.get("image_folder", "generated_images")  # Image folder to save images
 BASE_URL = config.get("base_url", "http://localhost:3000/")  # Base URL for generated images
+IMAGE_API_URL = config.get("image_api_url", "image_api_url")
+
 print('yml config',config)
 # Ensure the output folder exists
 if not os.path.exists(OUTPUT_FOLDER):
@@ -44,7 +46,6 @@ HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 # Image generation API URL and Token
 
-IMAGE_API_URL = os.getenv("image_api_url", "image_api_url")
 
 IMAGE_API_KEY = os.getenv("IMAGE_API_KEY", "your_image_api_key_here")
 

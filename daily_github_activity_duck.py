@@ -39,7 +39,9 @@ print('your token',GITHUB_TOKEN)
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 # Image generation API URL and Token
-IMAGE_API_URL = "https://free-flux.v2ray-tokyo.workers.dev/api/image"
+
+IMAGE_API_URL = os.getenv("image_api_url", "image_api_url")
+
 IMAGE_API_KEY = os.getenv("IMAGE_API_KEY", "your_image_api_key_here")
 
 print('your IMAGE_API_KEY',IMAGE_API_KEY)
@@ -163,7 +165,6 @@ def generate_cover_image(prompt):
     else:
         print(f"Failed to generate cover image: {response.status_code}")
     return None
-import requests
 
 def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
     """
@@ -183,29 +184,52 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
-    
-    payload = {
-        "prompt": prompt,
-        "size": size,
-        "n": n,
+    payload={
+  "messages": [
+    {
+      "role": "user",
+      "content": prompt
     }
+  ],
+  "stream": False
+}    
+
     
     try:
         response = requests.post(api_url, json=payload, headers=headers)
         
         if response.status_code == 200:
-            image_name = f"{prompt[:10]}.png"  # Save with a short name based on prompt
-            
-            image_path = save_image_locally(image_data.encode(), image_name)
-            image_url = BASE_URL + IMAGE_FOLDER + "/" + image_name  # URL to access the image
-
-            return image_url
-        else:
-            print("No image data received.")
+            data=response.json()
+            if data:
+                if 'choices' in data and len(data['choices'])>0:
+                    try:
+                        url=data['choices'][0]['message']['url']
+                        return url
+                    except:
+                        return None
             return None
+        else:
+            return {"error": response.status_code, "message": response.text}  # Error handling
     except Exception as e:
-        return None
+        return {"error": "exception", "message": str(e)}
 
+# Example Usage
+if __name__ == "__main__":
+    # Replace these values with your actual endpoint and API key
+    api_url = "https://fluxapi.borninsea.com/v1/chat/completions"  # Replace with the Worker URL
+    api_key = "123456"  # Replace with your API key
+    
+    # Call the endpoint
+    result = call_image_endpoint(
+        api_url=api_url,
+        api_key=api_key,
+        prompt="A panda sitting on a bamboo raft floating on a serene lake during sunrise",
+        size="1024x1024",
+        n=1
+    )
+    
+    # Print the response
+    print(result)
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
@@ -308,7 +332,7 @@ async def create_new_markdown_files(repos, username, chat, days_threshold=30):
 
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(
-                    api_url='https://flux-api.v2ray-tokyo.workers.dev/',
+                    api_url=IMAGE_API_URL,
         api_key=IMAGE_API_KEY,
 prompt=            f"A creative image representing the repository: {readme_content}")
         if cover_image_url is None:

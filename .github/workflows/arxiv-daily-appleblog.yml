@@ -46,6 +46,8 @@ jobs:
         env:
           repo: ${{github.repository}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SILICON_TOKEN: ${{ secrets.SILICON_TOKEN }}
+
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
 
       # ============================================

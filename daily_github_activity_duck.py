@@ -281,7 +281,7 @@ title: {repo_name}
         with open(filename, "w", encoding="utf-8") as file:
             file.write(md_content)
         print(f"Markdown file created: {filename}")
-def create_new_markdown_files(repos, username, chat, days_threshold=30):
+async def create_new_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
 
     for repo in repos:
@@ -317,13 +317,8 @@ prompt=            f"A creative image representing the repository: {readme_conte
         # Extract keywords and tags using Chat class
         keywords=None
         tags=None
-        if not asyncio.get_event_loop().is_running():
-            keywords, tags = asyncio.run(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
-        else:
-            loop = asyncio.get_event_loop()
-            task = asyncio.create_task(extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}"))
+        keywords, tags = await extract_keywords_and_tags(chat, f"{repo_name} {description} {readme_content}")
 
-            keywords, tags = await task
 
         # Select author
         author = select_author()
@@ -386,7 +381,7 @@ async def main():
         print("No repositories found or failed to fetch repositories.")
         return
 
-    create_new_markdown_files(repos, username, chat)
+    await create_new_markdown_files(repos, username, chat)
 
 # Run the async main function
 if __name__ == "__main__":

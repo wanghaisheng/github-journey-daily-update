@@ -454,7 +454,7 @@ title: {title}
 # Main execution
 async def main():
     try:
-       print('main function start')
+        print('main function start')
     # Initialize the chat with the model from config
         chat = Chat(vqd="your_vqd_here", model="gpt-4o-mini")
 

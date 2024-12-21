@@ -16,6 +16,8 @@ image_folder: "appleblog/public/assets"
 # Base URL for serving images, update this to match your server setup
 base_url: "http://localhost:3000/"
 
+chat_url: "https://heisenberg-duckduckgo-87.deno.dev/v1/chat/completions"
+
 # GitHub username to fetch repositories from
 username: "wanghaisheng"
 

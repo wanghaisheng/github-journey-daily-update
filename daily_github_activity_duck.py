@@ -152,10 +152,17 @@ def siliconflow(text,token,model='Qwen2.5'):
     response = requests.request("POST", url, json=payload, headers=headers)
 
     print(response.text)
-    return response.text
+    data= response.json()
+    if data:
+        try:
+            result=data['choices'][0]['message']['content']
+            return result
+        except:
+            return None 
+    return None 
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):
-    prompt = f"Extract keywords and tags from the following text:\n{text}\n"
+    prompt = f"Extract keywords and tags from the following text:\n{text}\n,return result in csv with two rows, first row is keywords in comma separator,second row is tags in comma"
     # keywords_response = await chat.fetch_response(prompt)
     keywords_response=siliconflow(text=prompt,token=SILICON_TOKEN)
     keywords, tags = keywords_response.split("\n") if "\n" in keywords_response else (keywords_response, keywords_response)
@@ -251,7 +258,8 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
                         return None
             return None
         else:
-            return {"error": response.status_code, "message": response.text}  # Error handling
+            print("error": response.status_code, "message": response.text)
+            return None # Error handling
     except Exception as e:
         return {"error": "exception", "message": str(e)}
 

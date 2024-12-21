@@ -130,8 +130,7 @@ def siliconflow(text,token,model='Qwen2.5'):
     url = "https://api.siliconflow.cn/v1/chat/completions"
 
     payload = {
-    "model": "deepseek-ai/deepseek-vl2",
-     "model": "Qwen/Qwen2.5-7B-Instruct"
+     "model": "Qwen/Qwen2.5-7B-Instruct",
 
         "messages": [
         {

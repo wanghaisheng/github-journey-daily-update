@@ -160,6 +160,48 @@ def generate_cover_image(prompt):
     else:
         print(f"Failed to generate cover image: {response.status_code}")
     return None
+import requests
+
+def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
+    """
+    Calls the Cloudflare Worker image generation endpoint.
+    
+    Args:
+        api_url (str): The endpoint URL of the Cloudflare Worker.
+        api_key (str): The API key for authentication.
+        prompt (str): The text prompt to generate the image.
+        size (str, optional): The size of the generated image (e.g., "1024x1024"). Defaults to "1024x1024".
+        n (int, optional): The number of images to generate. Defaults to 1.
+    
+    Returns:
+        dict: The JSON response from the endpoint.
+    """
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+    
+    payload = {
+        "prompt": prompt,
+        "size": size,
+        "n": n,
+    }
+    
+    try:
+        response = requests.post(api_url, json=payload, headers=headers)
+        
+        if response.status_code == 200:
+            image_name = f"{prompt[:10]}.png"  # Save with a short name based on prompt
+            
+            image_path = save_image_locally(image_data.encode(), image_name)
+            image_url = BASE_URL + IMAGE_FOLDER + "/" + image_name  # URL to access the image
+
+            return image_url
+        else:
+            print("No image data received.")
+            return None
+    except Exception as e:
+        return None
 
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
@@ -262,7 +304,12 @@ def create_new_markdown_files(repos, username, chat, days_threshold=30):
         readme_content = get_readme_content(username, repo_name) or description
 
         # Generate cover image based on the description or repository name
-        cover_image_url = generate_cover_image(f"A creative image representing the repository: {repo_name}")
+        cover_image_url = call_image_endpoint(
+                    api_url='https://flux-api.v2ray-tokyo.workers.dev/',
+        api_key=api_key,
+prompt=            f"A creative image representing the repository: {readme_content}")
+        if cover_image_url is None:
+            cover_image_url = generate_cover_image(f"A creative image representing the repository: {readme_content}")
 
         # Extract keywords and tags using Chat class
         keywords=None

@@ -19,6 +19,7 @@ def load_config():
     return {}
 
 config = load_config()
+CHAT_URL=config.get('chat_url','https://heisenberg-duckduckgo-87.deno.dev/v1/chat/completions')
 DEFAULT_AUTHOR_LIST = config.get("author_list", ["unknown"])
 OUTPUT_FOLDER = config.get("output_folder", "markdown_files")
 IMAGE_FOLDER = config.get("image_folder", "generated_images")  # Image folder to save images

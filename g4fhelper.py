@@ -283,6 +283,7 @@ Base it on this README:
 
 def main():
     # Example usage
+    print('blog example')
     repo_path = "path/to/your/repo"  # Local repository path
     repo_name = "github-journey-daily-update"
     repo_description = "Track and analyze GitHub activity across repositories"

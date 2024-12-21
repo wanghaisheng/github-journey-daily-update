@@ -1,0 +1,38 @@
+---
+author: Jane Smith
+cover:
+  alt: cover
+  square: {'error': 'exception', 'message': "Invalid URL 'image_api_url': No scheme supplied. Perhaps you meant https://image_api_url?"}
+  url: {'error': 'exception', 'message': "Invalid URL 'image_api_url': No scheme supplied. Perhaps you meant https://image_api_url?"}
+description: 'No description provided.'
+featured: true
+keywords: {"id":"0193e86859f8178d0f7ce94e6f723ebb","object":"chat.completion","created":1734770973,"model":"Qwen/Qwen2.5-7B-Instruct","choices":[{"index":0,"message":{"role":"assistant","content":"Keywords: search, details\n\nTags: #search-and-details"},"finish_reason":"stop"}],"usage":{"prompt_tokens":50,"completion_tokens":12,"total_tokens":62},"system_fingerprint":""}
+layout: ../../layouts/MarkdownPost.astro
+meta:
+- content: Jane Smith
+  name: author
+- content: {"id":"0193e86859f8178d0f7ce94e6f723ebb","object":"chat.completion","created":1734770973,"model":"Qwen/Qwen2.5-7B-Instruct","choices":[{"index":0,"message":{"role":"assistant","content":"Keywords: search, details\n\nTags: #search-and-details"},"finish_reason":"stop"}],"usage":{"prompt_tokens":50,"completion_tokens":12,"total_tokens":62},"system_fingerprint":""}
+  name: keywords
+pubDate: '2024-12-21 15:27:08'
+tags:
+- {"id":"0193e86859f8178d0f7ce94e6f723ebb","object":"chat.completion","created":1734770973,"model":"Qwen/Qwen2.5-7B-Instruct","choices":[{"index":0,"message":{"role":"assistant","content":"Keywords: search, details\n\nTags: #search-and-details"},"finish_reason":"stop"}],"usage":{"prompt_tokens":50,"completion_tokens":12,"total_tokens":62},"system_fingerprint":""}
+theme: light
+title: search-and-details
+---
+
+# search-and-details
+
+## Repository URL: 
+[https://github.com/wanghaisheng/search-and-details](https://github.com/wanghaisheng/search-and-details)
+
+## Stars: 
+**0**
+
+## Forks: 
+**0**
+
+## Description: 
+No description provided.
+
+## README Content: 
+# search-and-details

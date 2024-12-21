@@ -265,6 +265,26 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
             return None # Error handling
     except Exception as e:
         return None 
+
+def generateblog(repo_name,repo_description,readme_content,username=None,current_date=None):
+    if current_date is None:
+        current_date = datetime.now().strftime('%Y%m%d_%H%M%S')
+    if username is None:
+       username="wanghaisheng" 
+    generator = EnhancedBlogGenerator(
+        current_date=current_date,
+        username=username,
+        provider_name="g4f.Provider.Bing",
+        model_name="gpt-4",
+        temperature=0.7
+    )
+    blog_post,title = generator.generate_blog_post(
+        repo_name=repo_name,
+        repo_description=repo_description,
+        readme_content=readme_content,
+        repo_path='.'
+    )
+    return blog_post,title
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
@@ -283,8 +303,9 @@ def create_all_markdown_files(repos, username, chat, days_threshold=30):
         is_forked = repo["fork"]
 
         # Fetch README content or fallback to description
-        readme_content = get_readme_content(username, repo_name) or description
-
+        readme_content = get_readme_content(username, repo_name)
+        blogmd,title= generateblog(repo_name,repo_description,readme_content,username=None,current_date=None):
+            
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(
                     api_url=IMAGE_API_URL,
@@ -319,25 +340,21 @@ pubDate: '{date_today} 15:27:08'
 tags:
 - {', '.join(tags)}
 theme: light
-title: {repo_name}
+title: {title}
 ---
 
-# {repo_name}
+{blogmd}
 
-## Repository URL: 
+
+* Repository URL: 
 [{repo_url}]({repo_url})
 
-## Stars: 
+*  Stars: 
 **{stars_count}**
 
-## Forks: 
+* Forks: 
 **{forks_count}**
 
-## Description: 
-{description}
-
-## README Content: 
-{readme_content}
 """
 
         # Save to .md file in the output folder

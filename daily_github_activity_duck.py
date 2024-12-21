@@ -457,7 +457,7 @@ async def main():
 
     # Get the username from config
     username = config.get("username", "default_username")
-    repos = get_repositories(username)
+    repos = get_repositories(username)[:10]
     if not repos:
         print("No repositories found or failed to fetch repositories.")
         return

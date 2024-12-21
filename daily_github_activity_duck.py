@@ -154,11 +154,19 @@ def siliconflow(text,token,model='Qwen2.5'):
     return None 
 # Extract keywords and tags using Chat class
 async def extract_keywords_and_tags(chat, text):
-    prompt = f"Extract keywords and tags from the following text:\n{text}\n,return result in csv with two rows, first row is keywords in comma separator,second row is tags in comma"
+    prompt = f"Extract keywords  from the following text:\n{text}\n"
     # keywords_response = await chat.fetch_response(prompt)
     keywords_response=siliconflow(text=prompt,token=SILICON_TOKEN)
-    keywords, tags = keywords_response.split("\n\n") if "\n" in keywords_response else (keywords_response, keywords_response)
-    return keywords.replace('keywords,','').split(", "), tags.replace('tags,','').split(", ")
+    keywords = keywords_response.split("keywords,") if "keywords," in keywords_response else keywords_response
+    prompt = f"Extract tags from the following text:\n{text}\n"
+    tags_response=siliconflow(text=prompt,token=SILICON_TOKEN)
+
+
+    
+    tags = tags_response.split("tags,") if "tags," in tags_response else tags_response
+
+    
+    return keywords.split(", "), tags.split(", ")
 
 # Select a random author from the list
 def select_author():

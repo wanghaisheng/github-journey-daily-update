@@ -32,7 +32,7 @@ if not os.path.exists(IMAGE_FOLDER):
     os.makedirs(IMAGE_FOLDER)
 
 # GitHub API Token
-GITHUB_TOKEN = os.getenv("TOKEN", "your_github_access_token_here")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "your_github_access_token_here")
 print('your token',GITHUB_TOKEN)
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 

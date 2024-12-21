@@ -268,7 +268,7 @@ def call_image_endpoint(api_url, api_key, prompt, size="1024x1024", n=1):
 
 def generateblog(repo_name,repo_description,readme_content,username=None,current_date=None):
     if current_date is None:
-        current_date = datetime.now().strftime('%Y%m%d_%H%M%S')
+        current_date = datetime.now().strftime('%Y%m%d %H%M%S')
     if username is None:
        username="wanghaisheng" 
     generator = EnhancedBlogGenerator(
@@ -288,6 +288,7 @@ def generateblog(repo_name,repo_description,readme_content,username=None,current
 # Create Markdown file for each repository
 def create_all_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
+    pubdate = datetime.now().strftime('%Y%m%d %H%M%S')
 
     for repo in repos:
         # Skip repositories that haven't been updated recently
@@ -304,7 +305,7 @@ def create_all_markdown_files(repos, username, chat, days_threshold=30):
 
         # Fetch README content or fallback to description
         readme_content = get_readme_content(username, repo_name)
-        blogmd,title= generateblog(repo_name,repo_description,readme_content,username=None,current_date=None):
+        blogmd,title= generateblog(repo_name,repo_description=description,readme_content,username=username,current_date=None)
             
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(
@@ -336,7 +337,7 @@ meta:
   name: author
 - content: {', '.join(keywords)}
   name: keywords
-pubDate: '{date_today} 15:27:08'
+pubDate: '{pubdate}'
 tags:
 - {', '.join(tags)}
 theme: light
@@ -364,6 +365,7 @@ title: {title}
         print(f"Markdown file created: {filename}")
 async def create_new_markdown_files(repos, username, chat, days_threshold=30):
     date_today = datetime.date.today().strftime("%Y-%m-%d")
+    pubdate = datetime.now().strftime('%Y%m%d %H%M%S')
 
     for repo in repos:
         # Skip repositories that haven't been updated recently
@@ -386,6 +388,7 @@ async def create_new_markdown_files(repos, username, chat, days_threshold=30):
 
         # Fetch README content or fallback to description
         readme_content = get_readme_content(username, repo_name) or description
+        blogmd,title= generateblog(repo_name,repo_description=description,readme_content,username=username,current_date=None)
 
         # Generate cover image based on the description or repository name
         cover_image_url = call_image_endpoint(
@@ -420,29 +423,25 @@ meta:
   name: author
 - content: {', '.join(keywords)}
   name: keywords
-pubDate: '{date_today} 15:27:08'
+pubDate: '{pubdate}'
 tags:
 - {', '.join(tags)}
 theme: light
-title: {repo_name}
+title: {title}
 ---
 
-# {repo_name}
+ {blogmd}
 
-## Repository URL: 
+* Repository URL: 
 [{repo_url}]({repo_url})
 
-## Stars: 
+* Stars: 
 **{stars_count}**
 
-## Forks: 
+* Forks: 
 **{forks_count}**
 
-## Description: 
-{description}
 
-## README Content: 
-{readme_content}
 """
 
         # Save to .md file in the output folder
